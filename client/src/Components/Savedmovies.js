@@ -7,6 +7,8 @@ function Savedmovies() {
   const [savedMovies, setSavedMovies] = useState([]);
   let token = localStorage.getItem("token");
 
+  let defaultimg = "Images/posternotfound.jpg";
+
   async function getAllMovies() {
     let response = await axios.get("http://localhost:8000/saved-movies", {
       headers: {
@@ -48,22 +50,22 @@ function Savedmovies() {
   return (
     <div>
       {savedMovies.length > 0 && (
-        <ul className='saved-movies'>
+        <ul className="saved-movies">
           {savedMovies.map((savedMovie) => (
-            <li key={savedMovie.id} className='saved-movie-container'>
+            <li key={savedMovie.id} className="saved-movie-container">
               <img
-                src={savedMovie.image}
-                className='saved-movie-image'
-                alt='poster'
+                src={savedMovie.image ? savedMovie.image : defaultimg}
+                className="saved-movie-image"
+                alt="poster"
               />
-              <div className='saved-movie-info'>
-                <h2 className='saved-movie-title'>{savedMovie.title}</h2>
-                <p className='saved-movie-description'>
+              <div className="saved-movie-info">
+                <h2 className="saved-movie-title">{savedMovie.title}</h2>
+                <p className="saved-movie-description">
                   {savedMovie.description}
                 </p>
 
                 <button
-                  className='saved-movie-delete'
+                  className="saved-movie-delete"
                   onClick={() => deleteMovie(savedMovie.id)}
                 >
                   Delete
