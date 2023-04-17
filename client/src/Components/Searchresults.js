@@ -45,8 +45,7 @@ function Searchresults() {
           },
         }
       );
-      console.log(response.data);
-      alert("Your movie is saved successfully");
+      alert(response.data.msg);
     } catch (error) {
       console.error(error);
     }

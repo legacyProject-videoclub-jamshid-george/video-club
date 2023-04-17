@@ -34,8 +34,8 @@ function Login() {
   }
 
   return (
-    <div classusername="formcontainer">
-      <div classusername="form">
+    <div className="formcontainer">
+      <div className="form">
         <form onSubmit={login}>
           <h1>Login</h1>
           <label htmlFor="username"></label>
@@ -43,7 +43,7 @@ function Login() {
             id="username"
             type="text"
             ref={usernameRef}
-            placeholder="username"
+            placeholder="Username"
           />
           <br></br>
           <br></br>

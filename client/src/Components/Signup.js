@@ -33,8 +33,8 @@ if (token) {
   }
 
   return (
-    <div className="signupformcontainer">
-      <div className="signupform">
+    <div className="formcontainer">
+      <div className="form">
         <form onSubmit={createNewUser}>
           <h1>Create account</h1>
           <label htmlFor="username"></label>

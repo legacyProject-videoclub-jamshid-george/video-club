@@ -25,7 +25,6 @@ function Savedmovies() {
 
   async function deleteMovie(movie_id) {
     try {
-      console.log("movie_id", movie_id);
       let response = await axios.delete(
         `http://localhost:8000/delete-movie/${movie_id}`,
         {
@@ -34,7 +33,6 @@ function Savedmovies() {
           },
         }
       );
-      console.log("Server response: ", response);
       if (response.status === 200) {
         alert("Movie deleted successfully!");
         getAllMovies();

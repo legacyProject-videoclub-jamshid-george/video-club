@@ -93,7 +93,7 @@ router.put("/save-movie", verifyToken, async (req, res) => {
       { _id: userid },
       { $addToSet: { favoriteMovies: newMovie } }
     );
-    return res.send({ msg: "New favorite movie added!", newMovie });
+    return res.send({ msg: "Your movie is saved successfully!", newMovie });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
