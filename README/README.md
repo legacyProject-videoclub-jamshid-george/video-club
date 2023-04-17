@@ -34,7 +34,7 @@ Start the application using the following command in the server directory:
 npm run dev
 Open your browser and navigate to http://localhost:<port-number> to use the application.
 Contributors
-...........
-...........
+Spyros Trimis
+Ioannis Skardasis
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
