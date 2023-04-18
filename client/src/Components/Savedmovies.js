@@ -1,15 +1,22 @@
 // The purpose of this code is to define a React component that renders a list of saved movies and provides a delete button for each movie. The list of saved movies is fetched from the server and stored in the component state using the useState hook. The deleteMovie function is called when the delete button is clicked, which sends a DELETE request to the server to delete the movie with the specified movie_id. If there is an error, an error message is displayed.
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 
 function Savedmovies() {
   const [savedMovies, setSavedMovies] = useState([]);
   let token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   let defaultimg = "Images/posternotfound.jpg";
 
   async function getAllMovies() {
+    // protecting Router /savedmovies;
+    if (!token) {
+      return navigate("/login");
+    }
     let response = await axios.get("http://localhost:8000/saved-movies", {
       headers: {
         Authorization: `Bearer ${token}`,

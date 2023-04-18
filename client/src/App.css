@@ -131,6 +131,7 @@ a#checkmark {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  padding-right: 20mongoshpx;
 }
 
 .quote {
