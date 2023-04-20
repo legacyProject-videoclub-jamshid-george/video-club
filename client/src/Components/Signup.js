@@ -49,7 +49,7 @@ if (token) {
           <label htmlFor="password"></label>
           <input
             id="password"
-            type="text"
+            type="password"
             ref={passwordRef}
             placeholder="Password"
           />
