@@ -33,7 +33,7 @@ function Navbar() {
       <nav>
         {token ? (
           <>
-            <Link to="#">{decoded ? decoded.username : null}</Link>
+            <a to="#">{decoded ? decoded.username : null}</a>
             <Link to="/savedmovies">Saved Movies</Link>
             <Link onClick={logout} to="/login">
               Logout
