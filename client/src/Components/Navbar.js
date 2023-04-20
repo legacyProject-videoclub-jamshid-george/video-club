@@ -20,7 +20,9 @@ function Navbar() {
   }
 
   function logout() {
+    if(window.confirm("Are you sure that you want to logout?")){  
     localStorage.removeItem("token");
+    }
   }
   
   return (
