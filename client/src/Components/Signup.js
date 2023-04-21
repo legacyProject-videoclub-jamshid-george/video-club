@@ -1,6 +1,6 @@
 // The purpose of this code is to provide a React component for creating a new user account. It handles the form submission, sending the data to the server, and displaying any errors or redirecting the user based on the response from the server.
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 
@@ -43,6 +43,7 @@ if (token) {
             type="text"
             ref={usernameRef}
             placeholder="Username"
+            pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
           />
           <br></br>
           <br></br>
@@ -52,7 +53,11 @@ if (token) {
             type="password"
             ref={passwordRef}
             placeholder="Password"
+            pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/"
+            /* Minimum five characters, at least one letter and one number: */
           />
+          <br />
+          <span>require: Minimum five characters, at least one letter and one number:</span>
           <br />
           <br />
           <button type="submit">
