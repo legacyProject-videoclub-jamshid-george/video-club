@@ -195,6 +195,18 @@ a#checkmark {
   cursor: pointer;
 }
 
+.save-btn-disabled {
+  background-color: #4c4f5d;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  opacity: .65;
+  pointer-events: none;
+  cursor: pointer;
+}
+
 .result-save:hover {
   background-color: #e6a300;
 }

@@ -7,10 +7,11 @@ function Searchresults() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [dataSubmitted, setDataSubmitted] = useState(false);
+  const [savedMoviesId, setSavedMoviesId] = useState([]);
 
   let token = localStorage.getItem("token");
 
-  let defaultimg = "Images/posternotfound.jpg"
+  let defaultimg = "Images/posternotfound.jpg";
 
   async function fetchMovies(e) {
     e.preventDefault();
@@ -24,6 +25,17 @@ function Searchresults() {
       }
     );
 
+    //fetch saved movies from database
+    let { data } = await axios.get("http://localhost:8000/saved-movies", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    //on first load , keep only the id field
+    const moviesId = data.map((movie) => movie.id);
+    //keep the state of the mapped array
+    setSavedMoviesId(moviesId);
+    
     setDataSubmitted(true);
 
     if (response.status === 200) {
@@ -46,6 +58,13 @@ function Searchresults() {
         }
       );
       alert(response.data.msg);
+
+      //on save btn click , update the savedMoviesId array with the clicked movie
+      setSavedMoviesId((previousSavedMoviesId) => {
+        const updatedIdArray = [...previousSavedMoviesId, movie.id];
+        return updatedIdArray;
+      });
+      
     } catch (error) {
       console.error(error);
     }
@@ -53,43 +72,52 @@ function Searchresults() {
 
   return (
     <>
-      <form className="submitForm" onSubmit={fetchMovies}>
-        <label htmlFor="input">Search for a movie title:</label>
+      <form className='submitForm' onSubmit={fetchMovies}>
+        <label htmlFor='input'>Search for a movie title:</label>
         <input
-          id="input"
-          type="text"
+          id='input'
+          type='text'
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button className="buttonSubmit" type="submit">
+        <button className='buttonSubmit' type='submit'>
           Submit
         </button>
         {!dataSubmitted && (
           <img
-            src="https://whatthefrance.org/wp-content/uploads/2021/01/Videoclub-300x120.png"
-            className="logo"
-            alt="logo"
+            src='https://whatthefrance.org/wp-content/uploads/2021/01/Videoclub-300x120.png'
+            className='logo'
+            alt='logo'
           />
         )}
       </form>
       {results.length > 0 && (
-        <div className="searchresults">
+        <div className='searchresults'>
           {results.map((result) => (
-            <div key={result.id} className="result-container">
+            <div key={result.id} className='result-container'>
               <img
                 src={result.image ? result.image : defaultimg}
-                className="result-image"
-                alt="poster"
+                className='result-image'
+                alt='poster'
               />
-              <div className="result-info">
-                <h2 className="result-title">{result.title}</h2>
-                <p className="result-description">{result.description}</p>
-                <button
-                  className="result-save"
-                  onClick={() => saveMovie(result)}
-                >
-                  Save
-                </button>
+              <div className='result-info'>
+                <h2 className='result-title'>{result.title}</h2>
+                <p className='result-description'>{result.description}</p>
+                {savedMoviesId.includes(result.id) ? (
+                  <button
+                    className='save-btn-disabled'
+                    disabled={true}
+                  >
+                    save
+                  </button>
+                ) : (
+                  <button
+                    className='result-save'
+                    onClick={() => saveMovie(result)}
+                  >
+                    Save
+                  </button>
+                )}
               </div>
             </div>
           ))}
