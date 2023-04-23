@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import StarRating from "./StarRating/StarRating";
 
 function Savedmovies() {
   const [savedMovies, setSavedMovies] = useState([]);
@@ -22,7 +23,6 @@ function Savedmovies() {
         Authorization: `Bearer ${token}`,
       },
     });
-
     setSavedMovies(response.data);
   }
 
@@ -32,11 +32,14 @@ function Savedmovies() {
 
   async function deleteMovie(movie_id) {
     try {
-      let response = await axios.delete(`http://localhost:8000/delete-movie/${movie_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });  
+      let response = await axios.delete(
+        `http://localhost:8000/delete-movie/${movie_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (response.status === 200) {
         alert("Movie deleted successfully!");
         getAllMovies();
@@ -49,29 +52,55 @@ function Savedmovies() {
     }
   }
 
+  const rateMovieHandler = async (movieId, value) => {
+    let ratedMovie;
+    for (let i = 0; i < savedMovies.length; i++) {
+      if (savedMovies[i].id === movieId) {
+        savedMovies[i].rating = value;
+        ratedMovie = savedMovies[i];
+      }
+    }
+    const { id, rating } = ratedMovie;
+
+    await axios.put(
+      "http://localhost:8000/rate-movie",
+      { id, rating },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
+
   return (
     <div>
       {savedMovies.length > 0 && (
-        <ul className="saved-movies">
+        <ul className='saved-movies'>
           {savedMovies.map((savedMovie) => (
-            <li key={savedMovie.id} className="saved-movie-container">
+            <li key={savedMovie.id} className='saved-movie-container'>
               <img
                 src={savedMovie.image ? savedMovie.image : defaultimg}
-                className="saved-movie-image"
-                alt="poster"
+                className='saved-movie-image'
+                alt='poster'
               />
-              <div className="saved-movie-info">
-                <h2 className="saved-movie-title">{savedMovie.title}</h2>
-                <p className="saved-movie-description">
+              <div className='saved-movie-info'>
+                <h2 className='saved-movie-title'>{savedMovie.title}</h2>
+                <p className='saved-movie-description'>
                   {savedMovie.description}
                 </p>
 
                 <button
-                  className="saved-movie-delete"
+                  className='saved-movie-delete'
                   onClick={() => deleteMovie(savedMovie.id)}
                 >
                   Delete
                 </button>
+                <StarRating
+                  movieId={savedMovie.id}
+                  rateMovie={rateMovieHandler}
+                  rateValue={savedMovie.rating}
+                />
               </div>
             </li>
           ))}

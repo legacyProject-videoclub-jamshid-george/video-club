@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const { User, Quote } = require("../model/model");
+const { User, Quote} = require("../model/model");
 const verifyToken = require("../Middleware/auth");
 
 let saltRounds = Number(process.env.SALTY_ROUNDS);
@@ -80,15 +80,15 @@ router.get("/movie", verifyToken, async (req, res) => {
 // The purpose of this code is to define a route that allows a user to add a movie as a favorite in their profile. The code ensures that the user is authenticated before allowing them to add the movie, and then updates the user's document in the database with the new movie object.
 router.put("/save-movie", verifyToken, async (req, res) => {
   try {
-    let { id, title, description, image } = req.body;
+    let { id, title, description, image, rating } = req.body;
     let newMovie = {
       id,
       title,
       description,
       image,
+      rating,
     };
     let userid = req.user.userId;
-
     await User.findOneAndUpdate(
       { _id: userid },
       { $addToSet: { favoriteMovies: newMovie } }
@@ -99,6 +99,7 @@ router.put("/save-movie", verifyToken, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 // This code defines a GET route /saved-movies on a router object. When a GET request is made to this route, the code tries to find the user ID from the request object and uses it to find the user in the database using User.findById(). It then retrieves the user's favorite movies from the favoriteMovies array and sends them back as a JSON response using res.json().
 router.get("/saved-movies", verifyToken, async (req, res) => {
   try {
@@ -110,6 +111,24 @@ router.get("/saved-movies", verifyToken, async (req, res) => {
     console.error(error);
     res.status(500).send("Server error");
   }
+});
+
+router.put("/rate-movie", verifyToken, async (req, res) => {
+  //id is the the id of the rated movie, while rating is an integer from 1-5(both included)
+  const { id, rating } = req.body;
+  const userid = req.user.userId;
+  const query = { _id: userid, "favoriteMovies.id": id };
+
+  const update = {
+    $set: {
+      "favoriteMovies.$.rating": rating,
+    },
+  };
+  const options = { new: true };
+
+  User.findOneAndUpdate(query, update, options)
+    .then((updatedUser) => res.send(updatedUser))
+    .catch((error) => console.log(error));
 });
 
 // The purpose of this code is to allow users to delete a movie from their list of favorite movies.
@@ -146,4 +165,19 @@ router.get("/randomquote", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const allusers = await User.find();
+    res.send(allusers);
+  } catch (error) {
+    res.send(error);
+  }
+});
 module.exports = router;
+
+//   if (id === allsavedmovies[i].id) {
+//     await User.findOneAndUpdate(
+//       { _id: userid },
+//       { $pull: { favoriteMovies: allsavedmovies[i] } }
+//     );
+//   }

@@ -35,7 +35,7 @@ function Searchresults() {
     const moviesId = data.map((movie) => movie.id);
     //keep the state of the mapped array
     setSavedMoviesId(moviesId);
-    
+
     setDataSubmitted(true);
 
     if (response.status === 200) {
@@ -47,6 +47,8 @@ function Searchresults() {
 
   // SAVE BUTTON
   async function saveMovie(movie) {
+    //add to the object fetched from imdb api a new property for user rating
+    movie["rating"] = 0; 
     try {
       let response = await axios.put(
         "http://localhost:8000/save-movie",
@@ -64,7 +66,6 @@ function Searchresults() {
         const updatedIdArray = [...previousSavedMoviesId, movie.id];
         return updatedIdArray;
       });
-      
     } catch (error) {
       console.error(error);
     }
@@ -104,10 +105,7 @@ function Searchresults() {
                 <h2 className='result-title'>{result.title}</h2>
                 <p className='result-description'>{result.description}</p>
                 {savedMoviesId.includes(result.id) ? (
-                  <button
-                    className='save-btn-disabled'
-                    disabled={true}
-                  >
+                  <button className='save-btn-disabled' disabled={true}>
                     save
                   </button>
                 ) : (
