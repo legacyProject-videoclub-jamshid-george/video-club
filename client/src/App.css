@@ -287,6 +287,7 @@ a#checkmark {
   animation: spin-and-flip 7s ease-in-out infinite;
 }
 
+
 @keyframes spin-and-flip {
   0% {
     transform: rotate(0) scaleX(1);
@@ -298,4 +299,5 @@ a#checkmark {
     transform: rotate(360deg) scaleX(1);
   }
 }
+
 
