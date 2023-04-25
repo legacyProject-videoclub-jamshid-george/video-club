@@ -43,7 +43,7 @@ if (token) {
             type="text"
             ref={usernameRef}
             placeholder="Username"
-            pattern="^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"
+            pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
           />
           <br></br>
           <br></br>
@@ -53,11 +53,10 @@ if (token) {
             type="password"
             ref={passwordRef}
             placeholder="Password"
-            pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/"
-            /* Minimum five characters, at least one letter and one number: */
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}" 
           />
           <br />
-          <span>require: Minimum five characters, at least one letter and one number:</span>
+          <span>password: Must contain at least one number and one uppercase and lowercase letter, and at least 5 characters: </span>
           <br />
           <br />
           <button type="submit">
